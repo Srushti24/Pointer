@@ -30,7 +30,7 @@ public:
         {
         }
 
-    SharedPointer(const SharedPointer& sharedPtr){
+    SharedPointer(const SharedPointer& sharedPtr){ // Copy constructor
         this->m_ptr = sharedPtr.m_ptr;
         this->m_count = sharedPtr.m_count;
         if(nullptr != sharedPtr.m_ptr)
@@ -39,6 +39,22 @@ public:
         }
         
     }
+    
+    SharedPointer& operator=(const SharedPointer& sharedPtr)
+    {
+        this->m_ptr = sharedPtr.m_ptr;
+        this->m_count = sharedPtr.m_count;
+        if(nullptr != sharedPtr.m_ptr)
+        {
+            (*this->m_count)++;
+        }
+    }
+    
+    T* operator->() const
+    {
+        return this->m_ptr;
+    }
+    
 
      void cleanup(){
             (*m_count)--;

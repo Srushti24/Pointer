@@ -11,9 +11,6 @@
 #include "unique_pointer.hpp"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-     // Box obj;
     SharedPointer<Box> box;
     UniquePointer obj(new int(50));
     UniquePointer obj1(obj);
@@ -25,8 +22,5 @@ int main(int argc, const char * argv[]) {
     std::cout << "count after box1 " << box1.count() ; // Prints 1
     SharedPointer<Box> box2(box1); // calls copy constructor
     std::cout << "count after box2 " << box2.count() ; // Prints 2
-    
-    
-    
     return 0;
 }
