@@ -8,7 +8,8 @@
 #ifndef shared_pointer_hpp
 #define shared_pointer_hpp
 
-#include <stdio.h>
+using namespace std;
+#include <iostream>
 template<class T>
 class SharedPointer
 {
@@ -22,7 +23,7 @@ public:
     }
 
     ~SharedPointer(){
-        cleanup();
+        //cleanup();
         
     }
 
@@ -40,7 +41,7 @@ public:
         
     }
     
-    SharedPointer& operator=(const SharedPointer& sharedPtr)
+    SharedPointer& operator=(const SharedPointer& sharedPtr) //Copy assignment operator
     {
         this->m_ptr = sharedPtr.m_ptr;
         this->m_count = sharedPtr.m_count;
@@ -57,6 +58,7 @@ public:
     
 
      void cleanup(){
+            cout << "Cleanup is called";
             (*m_count)--;
             if (*m_count == 0)
             {

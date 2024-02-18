@@ -16,7 +16,7 @@ UniquePointer::UniquePointer():m_ptr(nullptr)
 
 UniquePointer::~UniquePointer()
 {
-    cleanup();
+   // cleanup();
 }
 
 
@@ -26,7 +26,7 @@ UniquePointer::UniquePointer(int* ptr):m_ptr(ptr)
 }
 
 
-UniquePointer::UniquePointer(const UniquePointer& ptr2)
+UniquePointer::UniquePointer(const UniquePointer& ptr2) //Copy assignment operator
 {
     this->m_ptr = ptr2.m_ptr;
 }
