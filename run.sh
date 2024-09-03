@@ -1,3 +1,4 @@
-mkdir build "$_"
+mkdir build
+cd build
 cmake ..
 make

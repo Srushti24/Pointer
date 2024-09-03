@@ -10,17 +10,25 @@
 
 #include <stdio.h>
 
+template<typename P>
 class UniquePointer
 {
 private:
-    int* m_ptr = nullptr;
+    P* m_ptr = nullptr;
 public:
    UniquePointer();
     ~UniquePointer();
-    UniquePointer(const UniquePointer& ptr2);
-    UniquePointer(int* ptr);
+    UniquePointer(const UniquePointer& ptr2); // Copy Constructor
+    P& operator=(const UniquePointer& ptr2) = delete;
+    P* operator->();
+    P& operator*();
+    UniquePointer(P* ptr); 
     void cleanup();
-    int* ptr();
+    P* ptr();
+    P* release();
+    void reset(P* new_ptr);
+    
+    UniquePointer<P>& make_unique(P dataType);
     
 };
 

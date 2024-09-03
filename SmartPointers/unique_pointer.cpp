@@ -8,36 +8,31 @@
 #include "unique_pointer.hpp"
 
 
-
-UniquePointer::UniquePointer():m_ptr(nullptr)
+template<typename P>
+UniquePointer<P>::UniquePointer():m_ptr(nullptr)
 {
 }
 
-
-UniquePointer::~UniquePointer()
+template<typename P>
+UniquePointer<P>::~UniquePointer()
 {
-   // cleanup();
+   cleanup();
 }
 
-
-UniquePointer::UniquePointer(int* ptr):m_ptr(ptr)
+template<typename P>
+UniquePointer<P>::UniquePointer(P* ptr):m_ptr(ptr)
 {
     
 }
 
-
-UniquePointer::UniquePointer(const UniquePointer& ptr2) //Copy assignment operator
-{
-    this->m_ptr = ptr2.m_ptr;
-}
-
-int* UniquePointer::ptr()
+template<typename P>
+P* UniquePointer<P>::ptr()
 {
     return this->m_ptr;
 }
 
-
- void UniquePointer::cleanup()
+template<typename P>
+ void UniquePointer<P>::cleanup()
 {
      if(nullptr != this->m_ptr)
      {
@@ -45,6 +40,46 @@ int* UniquePointer::ptr()
      }
 }
 
+template<typename P>
+P* UniquePointer<P>::operator->()
+{
+    return m_ptr;
+}
+
+template<typename P>
+P& UniquePointer<P>::operator*()
+{
+    return *m_ptr;
+}
+
+
+template<typename P>
+P* UniquePointer<P>::release()
+{
+    auto temp_ptr = m_ptr;
+    cleanup();
+    return temp_ptr;
+}
+
+template<typename P>
+void UniquePointer<P>::reset(P* new_ptr)
+{
+    auto temp_ptr = m_ptr;
+    cleanup();
+    m_ptr = new_ptr;
+}
+
+
+template<typename P>
+UniquePointer<P>:: UniquePointer(const UniquePointer& ptr2)
+{
+}
+
+template<typename P>
+UniquePointer<P>& UniquePointer<P>:: make_unique(P dataType)
+{
+    return unique_pointer<P>(new P());
+}
 
 
 
