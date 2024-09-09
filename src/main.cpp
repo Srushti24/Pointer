@@ -13,6 +13,9 @@
 using namespace std;
 
 int main(int argc, const char * argv[]) {
+    UniquePointer<int> ptr1;
+    UniquePointer<int>* ptr2 = new UniquePointer<int>();
+    UniquePointer<int>  ptr3 = make_unique<int>();
    // UniquePointer<int> temp;
   //  temp.make_unique<int>();
   //  *obj.ptr() = 30;
