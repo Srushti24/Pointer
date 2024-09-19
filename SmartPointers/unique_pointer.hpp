@@ -14,6 +14,9 @@ template<typename P>
 class UniquePointer
 {
 
+private:
+    P* m_ptr;
+    
 public: 
 
 UniquePointer()
@@ -41,10 +44,7 @@ P* ptr()
 
  void cleanup()
 {
-     if(this->m_ptr != nullptr)
-     {
-         delete this->m_ptr;
-     }
+    delete this->m_ptr;
 }
 
 P* operator->()
@@ -71,12 +71,19 @@ void reset(P* new_ptr)
     m_ptr = new_ptr;
 }
 
-UniquePointer(const UniquePointer& ptr2)
+UniquePointer(const UniquePointer&) = delete;
+
+UniquePointer& operator=(const UniquePointer&) = delete;
+
+UniquePointer(const UniquePointer&& ptr2)
 {
+    m_ptr = ptr2.m_ptr;
 }
 
-P& operator=(const UniquePointer& ptr2)
+UniquePointer& operator = (const UniquePointer&& ptr2)
 {
+    m_ptr = ptr2.m_ptr;
+    ptr2.m_ptr = nullptr;
 }
 
 UniquePointer<P> make_unique(P dataType)
@@ -84,9 +91,15 @@ UniquePointer<P> make_unique(P dataType)
     return unique_pointer<P>(new P());
 }
 
-private:
-    P* m_ptr;
 };
+
+template<typename T, typename... Args>
+UniquePointer<T> make_unique(Args&&... args)
+{
+    return UniquePointer<T>(new T(std::forward<Args>(args)...));
+}
+
+
 
 
 
