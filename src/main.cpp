@@ -15,7 +15,7 @@ int main(int argc, const char * argv[]) {
     UniquePointer<int> ptr1;
     UniquePointer<int>* ptr2 = new UniquePointer<int>();
     UniquePointer<int> ptr3 = make_unique<int>();
-    std::vector<UniquePointer<int> > unique_ptrs;
+  //  std::vector<UniquePointer<int> > unique_ptrs;
     // for(size_t i=0; i< 7; i++)
     // {
     //     unique_ptrs.push_back(new int(i));

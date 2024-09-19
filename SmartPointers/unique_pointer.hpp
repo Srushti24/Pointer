@@ -59,16 +59,20 @@ P& operator*()
 
 P* release()
 {
-    auto temp_ptr = m_ptr;
+    P* temp_ptr = m_ptr;
     cleanup();
     return temp_ptr;
 }
 
 void reset(P* new_ptr)
 {
-    auto temp_ptr = m_ptr;
-    cleanup();
+    P* temp_ptr = m_ptr;
     m_ptr = new_ptr;
+   if(temp_ptr)
+   {
+    delete temp_ptr;
+   }
+
 }
 
 UniquePointer(const UniquePointer&) = delete;
@@ -84,11 +88,6 @@ UniquePointer& operator = (const UniquePointer&& ptr2)
 {
     m_ptr = ptr2.m_ptr;
     ptr2.m_ptr = nullptr;
-}
-
-UniquePointer<P> make_unique(P dataType)
-{
-    return unique_pointer<P>(new P());
 }
 
 };
