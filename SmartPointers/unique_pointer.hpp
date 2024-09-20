@@ -44,7 +44,8 @@ P* ptr()
 
  void cleanup()
 {
-    delete this->m_ptr;
+    delete m_ptr;
+    m_ptr = nullptr; // why do this?
 }
 
 P* operator->()
@@ -60,36 +61,34 @@ P& operator*()
 P* release()
 {
     P* temp_ptr = m_ptr;
-    cleanup();
+    m_ptr = nullptr; // Avoid double deletion
     return temp_ptr;
 }
 
 void reset(P* new_ptr)
 {
-    P* temp_ptr = m_ptr;
+    cleanup();
     m_ptr = new_ptr;
-   if(temp_ptr)
-   {
-    delete temp_ptr;
-   }
-
 }
 
 UniquePointer(const UniquePointer&) = delete;
 
 UniquePointer& operator=(const UniquePointer&) = delete;
 
-UniquePointer(const UniquePointer&& ptr2)
+UniquePointer(UniquePointer&& ptr2)
+        : m_ptr(ptr2.m_ptr)
 {
-    m_ptr = ptr2.m_ptr;
+        ptr2.m_ptr = nullptr;
 }
 
-UniquePointer& operator = (const UniquePointer&& ptr2)
-{
-    m_ptr = ptr2.m_ptr;
-    ptr2.m_ptr = nullptr;
+UniquePointer& operator=(UniquePointer&& ptr2){
+    if (this != &ptr2) {
+        cleanup();
+        m_ptr = ptr2.m_ptr;
+        ptr2.m_ptr = nullptr;
+    }
+    return *this;
 }
-
 };
 
 template<typename T, typename... Args>
