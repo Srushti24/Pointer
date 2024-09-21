@@ -92,7 +92,7 @@ UniquePointer& operator=(UniquePointer&& ptr2){
 };
 
 template<typename T, typename... Args>
-UniquePointer<T> make_unique(Args&&... args)
+UniquePointer<T> make_unique(typename... Args)
 {
     return UniquePointer<T>(new T(std::forward<Args>(args)...));
 }
