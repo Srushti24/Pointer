@@ -10,14 +10,13 @@
 
 #include <stdio.h>
 
-class Box
-{
-private:
+class Box {
+  private:
     int m_len;
     int m_width;
     int m_height;
 
-public:
+  public:
     Box();
     ~Box();
 };

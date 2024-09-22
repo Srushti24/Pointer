@@ -11,12 +11,6 @@ UseTab: Never
 AlignConsecutiveDeclarations: true
 AlignConsecutiveAssignments: true
 
-# C++ settings
-Cpp11: true
-Cpp14: true
-Cpp17: true
-Cpp20: true
-
 # Spaces and line breaks
 SpaceBeforeParens: ControlStatements
 SpaceAfterCStyleCast: true
