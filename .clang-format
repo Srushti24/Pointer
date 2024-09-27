@@ -1,8 +1,5 @@
 # Use this file to configure clang-format
 
-# The version of clang-format to use (optional)
-BasedOnStyle: LLVM
-
 # Indentation settings
 IndentWidth: 4
 UseTab: Never

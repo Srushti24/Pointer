@@ -9,6 +9,8 @@
 #define unique_pointer_hpp
 
 #include <stdio.h>
+#include <utility>
+#include <iostream>
 
 template <typename P> class UniquePointer {
 
@@ -16,18 +18,23 @@ template <typename P> class UniquePointer {
     P* m_ptr;
 
   public:
-    UniquePointer() : m_ptr(nullptr) {}
+    UniquePointer() : m_ptr(nullptr) {
+        std::cout<< "Unique Pointer Constructor called \n";
+    }
 
     ~UniquePointer() {
         // delete m_ptr;
-        cleanup();
+        std::cout<< "Unique Pointer Destructor called \n";
+        destroy();
     }
 
-    UniquePointer(P* ptr) : m_ptr(ptr) {}
+    UniquePointer(P* ptr) : m_ptr(ptr) {
+        std::cout<< "Unique Pointer Param Constructor called \n";
+    }
 
     P* ptr() { return this->m_ptr; }
 
-    void cleanup() {
+    void destroy() {
         delete m_ptr;
         m_ptr = nullptr; // why do this?
     }
@@ -37,13 +44,15 @@ template <typename P> class UniquePointer {
     P& operator*() { return *m_ptr; }
 
     P* release() {
+        std::cout<< "Unique Pointer release called \n";
         P* temp_ptr = m_ptr;
         m_ptr       = nullptr; // Avoid double deletion
         return temp_ptr;
     }
 
     void reset(P* new_ptr) {
-        cleanup();
+        std::cout<< "Unique Pointer reset called \n";
+        destroy();
         m_ptr = new_ptr;
     }
 
@@ -54,8 +63,9 @@ template <typename P> class UniquePointer {
     UniquePointer(UniquePointer&& ptr2) : m_ptr(ptr2.m_ptr) { ptr2.m_ptr = nullptr; }
 
     UniquePointer& operator=(UniquePointer&& ptr2) {
+        std::cout<< "Unique Pointer move assignment called \n";
         if (this != &ptr2) {
-            cleanup();
+            destroy();
             m_ptr      = ptr2.m_ptr;
             ptr2.m_ptr = nullptr;
         }
@@ -63,7 +73,8 @@ template <typename P> class UniquePointer {
     }
 };
 
-template <typename T, typename... Args> UniquePointer<T> make_unique(typename... Args) {
+template <typename T, typename... Args> UniquePointer<T> make_unique(Args&&... args) {
+    std::cout<< "Unique Pointer make unique called \n";
     return UniquePointer<T>(new T(std::forward<Args>(args)...));
 }
 

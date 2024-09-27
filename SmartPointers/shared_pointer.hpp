@@ -1,25 +1,50 @@
-
+#include <utility>
+#include <iostream>
+#include <stdio.h>
 
 template <typename T> class SharedPointer {
 
   public:
     // Constructor
-    SharedPointer() : m_ptr(nullptr), count(new int(1)) {}
+    SharedPointer() : m_ptr(nullptr), count(new int(1)) {
+        std::cout << "Called Shared Constructor \n";
+    }
 
     // Paramatized Constructor
-    SharedPointer(T* ptr) : m_ptr(ptr), count(new int(1)) {}
+    SharedPointer(T* ptr) : m_ptr(ptr), count(new int(1)) {
+        std::cout << "called  Shared Paramatized Constructor \n";
+    }
 
     // Copy Constructor
-    SharedPointer(const SharedPointer& p) : m_ptr(p.m_ptr), count(p.count) { (*count)++; }
+    SharedPointer(const SharedPointer& p) : m_ptr(p.m_ptr), count(p.count) { 
+        std::cout << "called  Shared Copy Constructor \n";
+        (*count)++; 
+        }
+    
+    // Destructor
+    ~SharedPointer() { 
+        std::cout << " Shared Destructor \n";
+        destroy(); }
+
+    // Destroy the object
+    void destroy() {
+        std::cout << " Shared Destroy Called \n";
+        if(count == nullptr)
+        {
+            return;
+        }
+        *count = *count > 0 ? *count - 1 : *count;
+        if (*count == 0) {
+            delete m_ptr;
+            delete count;
+        }
+    }
 
     // Copy assigment operator
     SharedPointer& operator=(const SharedPointer& p) {
+        std::cout << " Copy Assigment Operator Called \n";
         if (this != &p) {
-            *count = *count > 0 ? *count - 1 : *count;
-            if (*count == 0) {
-                delete count;
-                delete m_ptr;
-            }
+            destroy();
             m_ptr = p.m_ptr;
             count = p.count;
             (*count)++;
@@ -29,33 +54,22 @@ template <typename T> class SharedPointer {
 
     // Move Constructor
     SharedPointer(SharedPointer&& p) : m_ptr(p.m_ptr), count(p.count) {
+        std::cout << "Move Shared Constructor \n";
         p.m_ptr = nullptr;
         p.count = nullptr;
     }
 
     // Move Assigment operator
     SharedPointer operator=(SharedPointer&& p) {
+        std::cout << "Move Shared Assigment Operator \n";
         if (this != &p) {
-            (*count)--;
-            if (*count == 0) {
-                delete count;
-                delete m_ptr;
-            }
+            destroy();
             m_ptr   = p.m_ptr;
             count   = p.count;
             p.m_ptr = nullptr;
             p.count = nullptr;
         }
         return *this;
-    }
-
-    // Destructor
-    ~SharedPointer() {
-        (*count)--;
-        if (*count == 0) {
-            delete m_ptr;
-            delete count;
-        }
     }
 
     // Dereferencing
@@ -72,22 +86,14 @@ template <typename T> class SharedPointer {
 
     // Reset
     void reset() {
-        *count = *count > 0 ? *count - 1 : *count;
-        if (*count == 0) {
-            delete m_ptr;
-            delete count;
-        }
+        destroy();
         m_ptr = nullptr;
         count = new int(1);
     }
 
     // Paramatized reset
     void reset(SharedPointer& new_ptr) {
-        *count = *count > 0 ? *count - 1 : *count;
-        if (*count == 0) {
-            delete m_ptr;
-            delete count;
-        }
+        destroy();
         m_ptr = new_ptr.m_ptr;
         count = new_ptr.count;
         *count++;
@@ -95,6 +101,7 @@ template <typename T> class SharedPointer {
 
     // release
     T* release() {
+        std::cout << "release \n";
         if (m_ptr) {
             T* temp_ptr = m_ptr;
             *count      = *count > 0 ? *count - 1 : *count;
@@ -111,15 +118,13 @@ template <typename T> class SharedPointer {
 
     // Swap two function
     void swap(SharedPointer& other) {
-        T* temp_ptr   = m_ptr;
-        T* temp_count = count;
-        m_ptr         = other.m_ptr;
-        count         = other.count;
-        other.m_ptr   = temp_ptr;
-        other.count   = temp_count;
+        std::swap(m_ptr, other.m_ptr);
+        std::swap(count, other.count);
     }
 
   private:
+    // Raw pointer used to point and count is the counter used to represent number of instances pointing to the same
+    // object
     T*   m_ptr;
     int* count;
 };
