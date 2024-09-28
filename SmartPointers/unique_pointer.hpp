@@ -60,7 +60,11 @@ template <typename P> class UniquePointer {
 
     UniquePointer& operator=(const UniquePointer&) = delete;
 
-    UniquePointer(UniquePointer&& ptr2) : m_ptr(ptr2.m_ptr) { ptr2.m_ptr = nullptr; }
+    UniquePointer(UniquePointer&& ptr2) : m_ptr(ptr2.m_ptr) { 
+        std::cout<< "Unique Pointer move constructor called \n";
+        ptr2.m_ptr = nullptr; 
+
+        }
 
     UniquePointer& operator=(UniquePointer&& ptr2) {
         std::cout<< "Unique Pointer move assignment called \n";

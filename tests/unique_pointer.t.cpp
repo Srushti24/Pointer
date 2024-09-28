@@ -10,3 +10,14 @@ TEST(UniquePointer, creatingNew) {
      uniquePointer = (std::move(uniquePointerOne));
      EXPECT_EQ(*uniquePointer, 10);
 }
+
+
+TEST(UniquePointer, creatingUniquePointerArray) {
+    std::vector<UniquePointer<int>> uniquePointerArray;
+    for(size_t i =0; i< 10; i++)
+    {
+        uniquePointerArray.push_back(make_unique<int>(i));
+    }
+     std::cout<< "Unique Pointer size is " << uniquePointerArray.size() << "\n";
+    EXPECT_EQ(uniquePointerArray.size(), 10);
+}
