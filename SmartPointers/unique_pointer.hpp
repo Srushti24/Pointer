@@ -1,12 +1,6 @@
-//
-//  unique_pointer.hpp
-//  Pointer
-//
-//  Created by Srushti Desai on 12/27/23.
-//
 
-#ifndef unique_pointer_hpp
-#define unique_pointer_hpp
+#ifndef UNIQUE_POINTER_HPP
+#define UNIQUE_POINTER_HPP
 
 #include <stdio.h>
 #include <utility>
@@ -36,7 +30,7 @@ template <typename P> class UniquePointer {
 
     void destroy() {
         delete m_ptr;
-        m_ptr = nullptr; // why do this?
+        m_ptr = nullptr;
     }
 
     P* operator->() { return m_ptr; }
@@ -78,7 +72,6 @@ template <typename P> class UniquePointer {
 };
 
 template <typename T, typename... Args> UniquePointer<T> make_unique(Args&&... args) {
-    std::cout<< "Unique Pointer make unique called \n";
     return UniquePointer<T>(new T(std::forward<Args>(args)...));
 }
 
