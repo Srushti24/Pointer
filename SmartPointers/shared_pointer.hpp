@@ -26,10 +26,6 @@ template <typename T> class SharedPointer {
 
     void destroy() {
         std::cout << " Shared Destroy Called \n";
-        if(count == nullptr)
-        {
-            return;
-        }
         *count = *count - 1;
         if (*count == 0) {
             delete m_ptr;
@@ -49,7 +45,6 @@ template <typename T> class SharedPointer {
     SharedPointer(SharedPointer&& p) : m_ptr(p.m_ptr), count(p.count) {
         std::cout << "Move Shared Constructor \n";
         p.m_ptr = nullptr;
-        p.count = nullptr;
     }
 
     SharedPointer operator=(SharedPointer&& p) {
@@ -58,8 +53,7 @@ template <typename T> class SharedPointer {
             m_ptr   = p.m_ptr;
             count   = p.count;
             p.m_ptr = nullptr;
-            p.count = nullptr;
-        return *this;
+           return *this;
     }
 
     T& operator*() { return *m_ptr; }
@@ -85,8 +79,6 @@ template <typename T> class SharedPointer {
     // Raw pointer used to point and count is the counter used to represent number of instances pointing to the same
     // object
     T*   m_ptr;
-    //Invarient: This will never be nullp[tr.
-    //This value will never be zero
     int* count;
 };
 
