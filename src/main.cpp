@@ -39,22 +39,11 @@ void testUniqueArrayPtr()
 void testSharedPointer()
 {
     SharedPointer<int> shared_pointer = make_shared<int>(5);
-     SharedPointer<int> shared_pointer_one = make_shared<int>(10);
-     assert(*shared_pointer == 5);
-     assert(*shared_pointer_one == 10);
-     shared_pointer = (std::move(shared_pointer_one));
-     assert(*shared_pointer == 10);
-}
-
-
-void testUniquePointerCreation()
-{
-    SharedPointer<int> shared_pointer = make_shared<int>(5);
-     SharedPointer<int> shared_pointer_one = make_shared<int>(10);
-     assert(*shared_pointer == 5);
-     assert(*shared_pointer_one == 10);
-     shared_pointer = (std::move(shared_pointer_one));
-     assert(*shared_pointer == 10);
+    SharedPointer<int> shared_pointer_one = make_shared<int>(10);
+    assert(*shared_pointer == 5);
+    assert(*shared_pointer_one == 10);
+    shared_pointer = std::move(shared_pointer_one);
+    assert(*shared_pointer == 10);
 }
 
 void testUniquePointerStruct()
@@ -105,16 +94,10 @@ void forTesting(UniquePointer<T> args)
 
 int main(int argc, const char* argv[]) {
    testUniquePointer();
-   testSharedPointer();
-   testUniquePointerCreation();
+    testSharedPointer();
    testUniquePointerStruct();
-   UniquePointer<int> temp = createUniquePtr<int>(5);
-   std::cout << "here \n";
-   assert(*temp == 5);
-    forTesting(createUniquePtr<int>(10));
-  UniquePointer<int> temp = createIntPtr();
-  testUniqueArrayPtr();
-    return 0;
+   testUniqueArrayPtr();
+  return 0;
 }
 
 
