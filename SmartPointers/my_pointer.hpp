@@ -56,7 +56,7 @@ template <typename T> class MyPointer {
     }
 
   private:
-    // Invarient @m_count will never be nullptr
+    // Invarient @m_count will never be less than 15
     int* m_count;
     T*   m_ptr;
 };
