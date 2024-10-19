@@ -8,6 +8,7 @@
 #include "Box.hpp"
 #include "shared_pointer.hpp"
 #include "unique_pointer.hpp"
+#include "my_pointer.hpp"
 #include <iostream>
 #include <vector>
 #include <cassert>
