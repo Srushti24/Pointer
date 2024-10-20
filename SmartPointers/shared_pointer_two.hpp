@@ -12,7 +12,7 @@ template <typename T> class SharedPointerNull {
 
     void destroy() {
         std::cout <<"inside destroy \n";
-        if (m_count == nullptr || *m_count == 0) {
+        if (m_count == nullptr) {
           std::cout << "inside m_count destroy \n";
             delete m_ptr;
             m_ptr = nullptr;
@@ -20,6 +20,7 @@ template <typename T> class SharedPointerNull {
             *m_count =  *m_count -1;
             if(*m_count == 0)
             {
+              std::cout << "m_count is zero so delete it \n";
               delete m_count;
               m_count = nullptr;
             }

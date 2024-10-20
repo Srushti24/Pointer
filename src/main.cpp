@@ -104,10 +104,8 @@ void testForTesting()
 
 void testSharedPointerTwo()
 {
-    int* temp = new int(0);
-    std::cout << "temp val is " << *temp;
- //   SharedPointerNull<int> temp;
-  //  SharedPointerNull<int> temp2 = temp;
+   SharedPointerNull<int> temp;
+  // SharedPointerNull<int> temp2 = temp;
 }
 
 
