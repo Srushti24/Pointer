@@ -1,80 +1,98 @@
-//
-//  shared_pointer.hpp
-//  Pointer
-//
-//  Created by Srushti Desai on 12/27/23.
-//
-
-#ifndef shared_pointer_hpp
-#define shared_pointer_hpp
-
-using namespace std;
+#ifndef SHARED_POINTER_HPP
+#define SHARED_POINTER_HPP
+#include <utility>
 #include <iostream>
-template<class T>
-class SharedPointer
-{
-private:
-    T* m_ptr;
-    unsigned int* m_count;
-public:
-     SharedPointer():m_ptr(nullptr), m_count(new unsigned int(0))
-    {
-        
+#include <stdio.h>
+
+template <typename T> class SharedPointer {
+
+  public:
+    SharedPointer() : m_ptr(nullptr), count(new int(1)) {
+        std::cout << "Called Shared Constructor \n";
     }
 
-    ~SharedPointer(){
-        //cleanup();
-        
+    SharedPointer(T* ptr) : m_ptr(ptr), count(new int(1)) {
+        std::cout << "called  Shared Paramatized Constructor \n";
     }
 
-    SharedPointer(T * ptr) : m_ptr(ptr), m_count(new unsigned int(1))
+    SharedPointer(const SharedPointer& p) : m_ptr(p.m_ptr), count(p.count) { 
+        std::cout << "called  Shared Copy Constructor \n";
+        (*count)++; 
+        }
+    
+    ~SharedPointer() { 
+        std::cout << " Shared Destructor \n";
+        destroy(); }
+
+    void destroy() {
+        std::cout << " Shared Destroy Called \n";
+        if (*count == 1) {
+            delete m_ptr;
+            delete count;
+            m_ptr = nullptr;
+            count = nullptr; // not breaking invarient why?
+        }
+        else
         {
-        }
-
-    SharedPointer(const SharedPointer& sharedPtr){ // Copy constructor
-        this->m_ptr = sharedPtr.m_ptr;
-        this->m_count = sharedPtr.m_count;
-        if(nullptr != sharedPtr.m_ptr)
-        {
-            (*this->m_count)++;
-        }
-        
-    }
-    
-    SharedPointer& operator=(const SharedPointer& sharedPtr) //Copy assignment operator
-    {
-        this->m_ptr = sharedPtr.m_ptr;
-        this->m_count = sharedPtr.m_count;
-        if(nullptr != sharedPtr.m_ptr)
-        {
-            (*this->m_count)++;
+        *count = *count -1;
         }
     }
-    
-    T* operator->() const
-    {
-        return this->m_ptr;
-    }
-    
 
-     void cleanup(){
-            cout << "Cleanup is called";
-            (*m_count)--;
-            if (*m_count == 0)
-            {
-                if (nullptr != m_ptr)
-                    delete m_ptr;
-                delete m_count;
-            }
-        }
-    
-    int count()
-    {
-        return *m_count;
+    SharedPointer& operator=(const SharedPointer& p) {
+        std::cout << " Copy Assigment Operator Called \n";
+            destroy();
+            m_ptr = p.m_ptr;
+            count = p.count;
+            (*count)++;
+        return *this;
     }
 
+    SharedPointer(SharedPointer&& p) : m_ptr(p.m_ptr), count(p.count) {
+        std::cout << "Move Shared Constructor \n";
+        p.m_ptr = nullptr;
+        p.count = new int(1);
+    }
 
-    
+    SharedPointer operator=(SharedPointer&& p) {
+        std::cout << "Move Shared Assigment Operator \n";
+            destroy();
+            m_ptr   = p.m_ptr;
+            count   = p.count;
+            p.m_ptr = nullptr;
+            p.count = new int(1);
+           return *this;
+    }
+
+    T& operator*() { return *m_ptr; }
+
+    T* operator->() { return m_ptr; }
+
+    int use_count() const { return *count; }
+
+    bool unique() const { return *count == 1; }
+
+    void reset() {
+        destroy();
+        m_ptr = nullptr;
+        count = new int(1);
+    }
+
+    void swap(SharedPointer& other) {
+        std::swap(m_ptr, other.m_ptr);
+        std::swap(count, other.count);
+    }
+
+  private:
+    // Raw pointer used to point and count is the counter used to represent number of instances pointing to the same
+    // object
+    T*   m_ptr;
+    //Invarient: @count will never be zero.
+    int* count;
 };
 
-#endif /* shared_pointer_hpp */
+template <typename T, typename... Args> SharedPointer<T> make_shared(Args&&... args) {
+    return SharedPointer<T>(new T(std::forward<Args>(args)...));
+}
+
+
+#endif

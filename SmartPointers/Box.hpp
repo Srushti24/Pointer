@@ -5,19 +5,18 @@
 //  Created by Srushti Desai on 12/27/23.
 //
 
-#ifndef Box_hpp
-#define Box_hpp
+#ifndef BOX_hpp
+#define BOX_hpp
 
 #include <stdio.h>
 
-class Box
-{
-private:
+class Box {
+  private:
     int m_len;
     int m_width;
     int m_height;
 
-public:
+  public:
     Box();
     ~Box();
 };
