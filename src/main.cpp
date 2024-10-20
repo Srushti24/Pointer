@@ -9,7 +9,7 @@
 #include "shared_pointer.hpp"
 #include "unique_pointer.hpp"
 #include "my_pointer.hpp"
-#include "shared_pointer_two.hpp"
+#include "shared_pointer_v2.hpp"
 #include <iostream>
 #include <vector>
 #include <cassert>
@@ -104,8 +104,48 @@ void testForTesting()
 
 void testSharedPointerTwo()
 {
-   SharedPointerNull<int> temp;
-  // SharedPointerNull<int> temp2 = temp;
+    SharedPointer<int> temp;
+    {
+    auto temp2 = SharedPointer<int>(new int{5});
+    temp = temp2;
+    }
+    std::cout<< "temp value is " << *temp << std::endl;
+  
+}
+
+void testSharedV2One()
+{
+    SharedPointerV2<int> temp;
+    {
+        auto temp1 = SharedPointerV2<int>(new int{5});
+        temp = temp1;
+    }
+    std::cout << "temp1 val is  " << *temp << std::endl;
+}
+
+void testSharedV2Two()
+{
+    
+}
+
+void testSharedV2Three()
+{
+    
+}
+
+void testSharedV2Four()
+{
+    
+}
+
+void testSharedV2Five()
+{
+    
+}
+
+void testSharedV2Six()
+{
+    
 }
 
 
@@ -114,7 +154,8 @@ int main(int argc, const char* argv[]) {
 //     testSharedPointer();
 //    testUniquePointerStruct();
 //    testUniqueArrayPtr();
-testSharedPointerTwo();
+ //testSharedPointerTwo();
+      testSharedV2One();
   return 0;
 }
 
