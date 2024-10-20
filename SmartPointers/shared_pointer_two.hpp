@@ -13,15 +13,17 @@ template <typename T> class SharedPointerNull {
     void destroy() {
         std::cout <<"inside destroy \n";
         if (m_count == nullptr || *m_count == 0) {
+          std::cout << "inside m_count destroy \n";
             delete m_ptr;
             m_ptr = nullptr;
-            if (m_count != nullptr) {
-                delete m_count;
-                m_count = nullptr;
-            }
         } else {
-            *m_count = *m_count - 1;
-        }
+            *m_count =  *m_count -1;
+            if(*m_count == 0)
+            {
+              delete m_count;
+              m_count = nullptr;
+            }
+          }
     }
 
     // Param constructor
@@ -31,6 +33,7 @@ template <typename T> class SharedPointerNull {
         std::cout << "inside increment \n";
         if (m_count == nullptr) {
             m_count = new int(1);
+            std::cout << "now m_count is " << *m_count << "\n";
         } else {
             *m_count = *m_count + 1;
         }
