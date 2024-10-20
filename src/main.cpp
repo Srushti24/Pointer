@@ -119,6 +119,7 @@ void testSharedV2One()
     {
         auto temp1 = SharedPointerV2<int>(new int{5});
         temp = temp1;
+        std::cout << "assignment done" << std::endl;
     }
     std::cout << "temp1 val is  " << *temp << std::endl;
 }

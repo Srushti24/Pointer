@@ -48,6 +48,7 @@ template <typename T> class SharedPointerV2 {
         std::cout << " m_ptr is " << m_ptr << std::endl;
         std::cout << " temp m_ptr is " << temp.m_ptr << std::endl;
         std::cout << "m_count value is " << *m_count << std::endl;
+        return *this;
     }
 
     // Copy constructor
