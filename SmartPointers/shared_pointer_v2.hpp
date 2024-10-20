@@ -8,20 +8,20 @@ template <typename T> class SharedPointerV2 {
     SharedPointerV2() : m_ptr(nullptr), m_count(nullptr) { std::cout << "inside constructor \n"; };
 
     // Destructor
-    ~SharedPointerV2() { destroy(); }
+    ~SharedPointerV2() { 
+      destroy(); 
+      }
 
     void destroy() {
         std::cout <<"inside destroy \n";
-        if (m_count == nullptr) {
-          std::cout << "inside m_count destroy \n";
-            delete m_ptr;
-            m_ptr = nullptr;
-        } else {
+        if (m_count != nullptr) {
             *m_count =  *m_count -1;
             if(*m_count == 0 )
             {
               delete m_ptr;
               m_ptr = nullptr;
+              delete m_count;
+              m_count = nullptr;
             }
           }
     }
@@ -42,12 +42,6 @@ template <typename T> class SharedPointerV2 {
           {
             *m_count = *m_count + 1;
           }
-        std::cout << "successful copy " << std::endl;
-        std::cout << "m_count is  " <<  m_count << std::endl;
-        std::cout << "temp m_count is"  << temp.m_count << std::endl;
-        std::cout << " m_ptr is " << m_ptr << std::endl;
-        std::cout << " temp m_ptr is " << temp.m_ptr << std::endl;
-        std::cout << "m_count value is " << *m_count << std::endl;
         return *this;
     }
 

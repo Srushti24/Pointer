@@ -126,7 +126,9 @@ void testSharedV2One()
 
 void testSharedV2Two()
 {
-    
+  SharedPointerV2<int> s1;
+  SharedPointerV2<int> s2;
+  s1 = s2;  
 }
 
 void testSharedV2Three()
@@ -157,6 +159,7 @@ int main(int argc, const char* argv[]) {
 //    testUniqueArrayPtr();
  //testSharedPointerTwo();
       testSharedV2One();
+      testSharedV2Two();
   return 0;
 }
 
