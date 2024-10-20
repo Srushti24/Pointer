@@ -9,6 +9,7 @@
 #include "shared_pointer.hpp"
 #include "unique_pointer.hpp"
 #include "my_pointer.hpp"
+#include "shared_pointer_two.hpp"
 #include <iostream>
 #include <vector>
 #include <cassert>
@@ -93,11 +94,27 @@ void forTesting(UniquePointer<T> args)
     std::cout << "value is " << *args << "\n";
 }
 
+
+void testForTesting()
+{
+    SharedPointer<int> temp1;
+    int* temp =  new int(5);
+    SharedPointer<int> temp2(temp);
+}
+
+void testSharedPointerTwo()
+{
+    SharedPointerNull<int> temp;
+    SharedPointerNull<int> temp2 = temp;
+}
+
+
 int main(int argc, const char* argv[]) {
-   testUniquePointer();
-    testSharedPointer();
-   testUniquePointerStruct();
-   testUniqueArrayPtr();
+//    testUniquePointer();
+//     testSharedPointer();
+//    testUniquePointerStruct();
+//    testUniqueArrayPtr();
+testSharedPointerTwo();
   return 0;
 }
 
