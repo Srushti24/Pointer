@@ -41,6 +41,7 @@ template <typename T> class SharedPointerV2 {
 
     // Copy constructor
     SharedPointerV2(const SharedPointerV2& temp) : m_ptr(temp.m_ptr), m_count(temp.m_count) {
+        std::cout << "copy constructor called" << std::endl;
         if (m_ptr != nullptr) {
             *m_count = *m_count + 1;
         }
@@ -68,6 +69,10 @@ template <typename T> class SharedPointerV2 {
     T* get() { return m_ptr; }
 
     T& operator*() { return *m_ptr; }
+
+    int getCount(){
+        return m_count == nullptr ? 0: *m_count;
+    }
 
   private:
     T* m_ptr;

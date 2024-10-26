@@ -11,13 +11,14 @@
 #include <stdio.h>
 
 class Box {
-  private:
-    int m_len;
-    int m_width;
-    int m_height;
-
   public:
     Box();
+    Box(int length);
+    Box(const Box& copyBox);
+    Box(Box&& copyBox);
+    Box& operator=(const Box& copyBox);
+    Box& operator=(Box&& copyBox);
+    int m_len;
     ~Box();
 };
 #endif /* Box_hpp */
