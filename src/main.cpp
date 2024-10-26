@@ -103,8 +103,10 @@ void testSharedV2One() {
 
 void testSharedV2Two() { // Testing move operator
     SharedPointerV2<int> s1(new int{6});
+    assert(s1.get() != nullptr);
     SharedPointerV2<int> s2 = std::move(s1);
     assert(*s2 == 6);
+    assert(s1.get() == nullptr);
 }
 
 void testSharedV2Three() { // Testing copy Assignment operator when an object is passed
@@ -139,6 +141,7 @@ void testSharedPointerV2Seven() { // Testing move constructor
     assert(s1.getCount() == 1);
     SharedPointerV2<Box> s2(std::move(s1));
     assert(s2->m_len == 7);
+    assert(s1.get() == nullptr);
     assert(s1.getCount() == 0);
 }
 
