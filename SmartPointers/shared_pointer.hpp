@@ -1,66 +1,51 @@
 #ifndef SHARED_POINTER_HPP
 #define SHARED_POINTER_HPP
-#include <utility>
 #include <iostream>
 #include <stdio.h>
+#include <utility>
 
 template <typename T> class SharedPointer {
 
   public:
-    SharedPointer() : m_ptr(nullptr), count(new int(1)) {
-        std::cout << "Called Shared Constructor \n";
-    }
+    SharedPointer() : m_ptr(nullptr), count(new int(1)) {}
 
-    SharedPointer(T* ptr) : m_ptr(ptr), count(new int(1)) {
-        std::cout << "called  Shared Paramatized Constructor \n";
-    }
+    SharedPointer(T* ptr) : m_ptr(ptr), count(new int(1)) {}
 
-    SharedPointer(const SharedPointer& p) : m_ptr(p.m_ptr), count(p.count) { 
-        std::cout << "called  Shared Copy Constructor \n";
-        (*count)++; 
-        }
-    
-    ~SharedPointer() { 
-        std::cout << " Shared Destructor \n";
-        destroy(); }
+    SharedPointer(const SharedPointer& p) : m_ptr(p.m_ptr), count(p.count) { (*count)++; }
+
+    ~SharedPointer() { destroy(); }
 
     void destroy() {
-        std::cout << " Shared Destroy Called \n";
         if (*count == 1) {
             delete m_ptr;
             delete count;
             m_ptr = nullptr;
             count = nullptr; // not breaking invarient why?
-        }
-        else
-        {
-        *count = *count -1;
+        } else {
+            *count = *count - 1;
         }
     }
 
     SharedPointer& operator=(const SharedPointer& p) {
-        std::cout << " Copy Assigment Operator Called \n";
-            destroy();
-            m_ptr = p.m_ptr;
-            count = p.count;
-            (*count)++;
+        destroy();
+        m_ptr = p.m_ptr;
+        count = p.count;
+        (*count)++;
         return *this;
     }
 
     SharedPointer(SharedPointer&& p) : m_ptr(p.m_ptr), count(p.count) {
-        std::cout << "Move Shared Constructor \n";
         p.m_ptr = nullptr;
         p.count = new int(1);
     }
 
     SharedPointer operator=(SharedPointer&& p) {
-        std::cout << "Move Shared Assigment Operator \n";
-            destroy();
-            m_ptr   = p.m_ptr;
-            count   = p.count;
-            p.m_ptr = nullptr;
-            p.count = new int(1);
-           return *this;
+        destroy();
+        m_ptr   = p.m_ptr;
+        count   = p.count;
+        p.m_ptr = nullptr;
+        p.count = new int(1);
+        return *this;
     }
 
     T& operator*() { return *m_ptr; }
@@ -85,14 +70,13 @@ template <typename T> class SharedPointer {
   private:
     // Raw pointer used to point and count is the counter used to represent number of instances pointing to the same
     // object
-    T*   m_ptr;
-    //Invarient: @count will never be zero.
+    T* m_ptr;
+    // Invarient: @count will never be zero.
     int* count;
 };
 
 template <typename T, typename... Args> SharedPointer<T> make_shared(Args&&... args) {
     return SharedPointer<T>(new T(std::forward<Args>(args)...));
 }
-
 
 #endif

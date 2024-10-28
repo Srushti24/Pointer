@@ -138,5 +138,24 @@ void testChangingObjectValues() {
     sp2->b                 = 9;
     assert(sp1->a == 6);
     assert(sp1->b == 9);
-     assert(sp1->b == 4);
+}
+
+void testSharedPtrWithStruct() {
+    int a = 0;
+    int b = 0;
+    struct S {
+        S(int& a, int& b) : a_(a), b_(b) { a_++; }
+        ~S() { b_++; }
+        int& a_;
+        int& b_;
+    };
+    {
+        std::vector<SharedPointerV2<S>> temp;
+        for (size_t i = 0; i < 5; i++) {
+            SharedPointerV2<S> sTemp(new S(a, b));
+            temp.push_back(sTemp);
+        }
+    }
+    assert(a == 5);
+    assert(b == 5);
 }

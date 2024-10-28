@@ -19,39 +19,26 @@ void testUniquePointerStruct() {
     int destructionCount  = 0;
     struct S {
         S(int& constructionCount, int& destructionCount)
-            : constructionCount(constructionCount), destructionCount(destructionCount) {
-            std::cout << "constructionCount \n";
-            constructionCount++;
+            : constructionCount_(constructionCount), destructionCount_(destructionCount) {
+            constructionCount_++;
         }
-        ~S() {
-            std::cout << "destructionCount before = " << destructionCount << std::endl;
-            destructionCount++;
-            std::cout << "destructionCount after = " << destructionCount << std::endl;
-        }
-        int constructionCount;
-        int destructionCount;
+        ~S() { destructionCount_++; }
+        int& constructionCount_;
+        int& destructionCount_;
     };
     {
         std::vector<UniquePointer<S>> vectorS;
         for (size_t i = 0; i < 5; i++) {
             vectorS.push_back(make_unique<S>(constructionCount, destructionCount));
         }
-        for (size_t i = 0; i < 5; i++) {
-
-            std::cout << vectorS[i]->constructionCount << std::endl;
-        }
-        vectorS.pop_back();
-        std::cout << "destructionCount after pop  = " << destructionCount << std::endl;
-        std::cout << "constructionCount after pop  = " << constructionCount << std::endl;
     }
-    std::cout << "destructionCount = " << destructionCount << std::endl;
-    std::cout << "constructionCount = " << constructionCount << std::endl;
     assert(constructionCount == 5);
-    assert(destructionCount == 0);
-    std::cout << "done with assertion" << std::endl;
+    assert(destructionCount == 5);
 }
 
 int main(int argc, const char* argv[]) {
+    testSharedPtrWithStruct();
+    testUniquePointerStruct();
     testSharedPointerWithContext();
     testMoveOpt();
     testCopyAssignOpWithObj();
