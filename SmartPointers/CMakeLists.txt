@@ -3,5 +3,6 @@ Box.cpp
 unique_pointer
 shared_pointer
 shared_pointer_v2
+shared_pointer_v2_test.cpp
 my_pointer
 )

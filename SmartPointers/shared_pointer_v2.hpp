@@ -1,5 +1,5 @@
 
-#include <stdio.h>
+#include <iostream>
 
 template <typename T> class SharedPointerV2 {
 
@@ -55,13 +55,14 @@ template <typename T> class SharedPointerV2 {
     }
 
     // Move Assignmenet operator
-    SharedPointerV2 operator=(SharedPointerV2&& temp) {
+    SharedPointerV2& operator=(SharedPointerV2&& temp) {
         std::cout << "Move Assignmenet operator \n";
         destroy();
         m_count      = temp.m_count;
         m_ptr        = temp.m_ptr;
         temp.m_count = nullptr;
         temp.m_ptr   = nullptr;
+        return *this;
     }
 
     T* operator->() { return m_ptr; }

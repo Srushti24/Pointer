@@ -29,8 +29,11 @@ template <typename P> class UniquePointer {
     P* ptr() { return this->m_ptr; }
 
     void destroy() {
-        delete m_ptr;
-        m_ptr = nullptr;
+        if(m_ptr)
+        {
+            delete m_ptr;
+            m_ptr = nullptr;
+        }
     }
 
     P* operator->() { return m_ptr; }
@@ -57,7 +60,6 @@ template <typename P> class UniquePointer {
     UniquePointer(UniquePointer&& ptr2) : m_ptr(ptr2.m_ptr) { 
         std::cout<< "Unique Pointer move constructor called \n";
         ptr2.m_ptr = nullptr; 
-
         }
 
     UniquePointer& operator=(UniquePointer&& ptr2) {
