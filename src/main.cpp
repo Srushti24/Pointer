@@ -38,7 +38,7 @@ void testUniquePointerStruct() {
         }
         for (size_t i = 0; i < 5; i++) {
 
-            std::cout <<  vectorS[i]->constructionCount << std::endl;
+            std::cout << vectorS[i]->constructionCount << std::endl;
         }
         vectorS.pop_back();
         std::cout << "destructionCount after pop  = " << destructionCount << std::endl;
@@ -52,7 +52,18 @@ void testUniquePointerStruct() {
 }
 
 int main(int argc, const char* argv[]) {
-    //testUniquePointerStruct();
+    testSharedPointerWithContext();
+    testMoveOpt();
+    testCopyAssignOpWithObj();
+    testCopyAssignNoObj();
+    testCopyCrtNoObj();
+    testCopyCrtObj();
+    testMoveCrt();
+    testParamCrtWithObj();
+    testParamCrtWithNullObj();
     testMultipleCrt();
+    testMultipleNullCrt();
+    testMultipleContextDelete();
+    testChangingObjectValues();
     return 0;
 }
