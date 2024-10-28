@@ -138,4 +138,5 @@ void testChangingObjectValues() {
     sp2->b                 = 9;
     assert(sp1->a == 6);
     assert(sp1->b == 9);
+     assert(sp1->b == 4);
 }
